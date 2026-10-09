@@ -1,0 +1,158 @@
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 34px 18px;
+  color: var(--text-muted);
+}
+
+.compact {
+  padding: 20px 12px;
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.emptyTitle {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.emptyDescription {
+  font-size: 12.5px;
+  max-width: 340px;
+  line-height: 1.55;
+}
+
+.emptyAction {
+  margin-top: 6px;
+}
+
+/* ---- Loading --------------------------------------------------------- */
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 34px 18px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent);
+  animation: spin 0.7s linear infinite;
+}
+
+.loadingLabel {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- Skeletons ------------------------------------------------------- */
+
+.skeleton {
+  display: block;
+  border-radius: 5px;
+  background: linear-gradient(90deg, var(--surface-2) 25%, var(--surface-hover) 50%, var(--surface-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeletonList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.skeletonRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---- Error ----------------------------------------------------------- */
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  background: var(--negative-soft);
+  border-radius: var(--radius);
+}
+
+.errorIcon {
+  color: var(--negative);
+  display: flex;
+  flex-shrink: 0;
+}
+
+.errorText {
+  flex: 1;
+  min-width: 0;
+}
+
+.errorTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.errorMessage {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.retryButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.retryButton:hover {
+  background: var(--surface-hover);
+}

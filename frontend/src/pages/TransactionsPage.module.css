@@ -1,0 +1,61 @@
+.statRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.exportLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  padding: 0 13px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 550;
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  transition: color 0.12s ease, background 0.12s ease;
+}
+
+.exportLink:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.description {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.accountCell {
+  display: grid;
+  gap: 1px;
+}
+
+.transferArrow {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.inlineError {
+  background: var(--negative-soft);
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  color: var(--negative);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-size: 13px;
+  margin-bottom: 12px;
+}

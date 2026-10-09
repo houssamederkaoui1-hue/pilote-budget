@@ -1,0 +1,65 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+
+# ---- Node / frontend build output ----
+node_modules/
+dist/
+*.tsbuildinfo
+
+# ---- Environment & secrets (never commit these) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+id_rsa
+id_ecdsa
+id_ed25519
+.netrc
+credentials
+secrets.*
+.secret_token
+
+# ---- Local databases & personal financial data ----
+backend/data/*
+!backend/data/.gitkeep
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+*.db-wal2
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+
+# ---- Financial exports / backups / downloads ----
+*.csv
+*.xlsx
+*.dump
+*.backup
+*.bak
+*.tar
+*.tgz
+*.gz
+*.zip
+backups/
+exports/
+downloads/
+
+# ---- Editors / OS ----
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+Thumbs.db

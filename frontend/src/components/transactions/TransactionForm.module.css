@@ -1,0 +1,115 @@
+.form {
+  margin-top: 14px;
+  display: grid;
+  gap: 2px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.quickKind {
+  margin-top: 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.formError {
+  margin-top: 10px;
+  background: var(--negative-soft);
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  color: var(--negative);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.suggestions {
+  margin-top: 2px;
+  display: grid;
+  gap: 6px;
+}
+
+.suggestionsLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.chipActive {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.chipExact {
+  opacity: 0.65;
+  font-size: 11px;
+}
+
+.suggestHint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.dupWarn {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  background: var(--negative-soft);
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  color: var(--negative);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.dupNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 8px;
+  background: var(--warning-soft);
+  border: 1px solid rgba(232, 176, 75, 0.35);
+  color: var(--warning);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.forceAdd {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}

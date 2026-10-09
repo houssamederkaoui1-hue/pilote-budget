@@ -1,0 +1,143 @@
+.form {
+  display: grid;
+  gap: 14px;
+}
+
+.kindRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: var(--color-surface-raised, #f4f6f3);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.kind {
+  border: none;
+  background: transparent;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--color-muted, #68786e);
+  cursor: pointer;
+}
+
+.kindActive {
+  background: var(--color-accent, #2f6f4f);
+  color: #fff;
+}
+
+.numberRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 520px) {
+  .numberRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+.thinking {
+  font-size: 12px;
+  color: var(--color-muted, #68786e);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.suggestions {
+  display: grid;
+  gap: 6px;
+}
+
+.suggestionsLabel {
+  font-size: 12px;
+  color: var(--color-muted, #68786e);
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid var(--color-border, #dfe4dd);
+  background: var(--color-surface, #fff);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.chipActive {
+  border-color: var(--color-accent, #2f6f4f);
+  background: rgba(47, 111, 79, 0.1);
+  color: var(--color-accent, #2f6f4f);
+  font-weight: 600;
+}
+
+.chipExact {
+  opacity: 0.65;
+  font-size: 11px;
+}
+
+.dupWarn {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(190, 38, 18, 0.08);
+  border: 1px solid rgba(190, 38, 18, 0.3);
+  color: #a02b16;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.dupNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: rgba(200, 130, 20, 0.1);
+  border: 1px solid rgba(200, 130, 20, 0.3);
+  color: #8a5a08;
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.error {
+  color: #a02b16;
+  font-size: 13px;
+}
+
+.done {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(47, 111, 79, 0.09);
+  border: 1px solid rgba(47, 111, 79, 0.3);
+  color: var(--color-accent, #2f6f4f);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}

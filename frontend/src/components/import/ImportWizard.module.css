@@ -1,0 +1,208 @@
+.steps {
+  display: flex;
+  gap: 6px;
+  list-style: none;
+  margin: -4px 0 18px;
+  padding: 0;
+}
+
+.steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--bg-elevated);
+}
+
+.steps li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  font-size: 10px;
+}
+
+.stepActive {
+  color: var(--text) !important;
+  border-color: var(--accent) !important;
+}
+
+.stepDone {
+  color: var(--text-secondary) !important;
+  border-color: var(--border-strong) !important;
+}
+
+.stepDone span {
+  background: var(--positive-soft);
+  color: var(--positive);
+}
+
+.dropzone {
+  display: block;
+  padding: 28px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropzone:has(input) :where(input) {
+  display: none;
+}
+
+.dropzoneText {
+  color: var(--text-secondary);
+  font-size: 13.5px;
+}
+
+.fileStep {
+  padding: 8px 0;
+}
+
+.fileHint {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 12.5px;
+}
+
+.mappingTable {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.mappingHead,
+.mappingRow {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.mappingHead {
+  padding: 6px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--surface-2);
+}
+
+.mappingRow {
+  padding: 7px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.fieldLabel {
+  font-size: 13px;
+  color: var(--text);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.fieldLabel em {
+  font-style: normal;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.optionsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.counts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.count,
+.countGood,
+.countBad,
+.countWarn {
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  display: grid;
+  gap: 1px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.countGood strong {
+  color: var(--positive);
+}
+
+.countBad strong {
+  color: var(--negative);
+}
+
+.countWarn strong {
+  color: var(--warning);
+}
+
+.count strong {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.count span {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tableWrap {
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  max-height: 320px;
+}
+
+.commitErrors {
+  margin-top: 10px;
+  background: var(--negative-soft);
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 12.5px;
+  color: var(--negative);
+}
+
+.rowErrors {
+  margin: 4px 0 0;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--negative);
+}
+
+.error {
+  margin-bottom: 12px;
+  background: var(--negative-soft);
+  border: 1px solid rgba(242, 109, 109, 0.35);
+  color: var(--negative);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  font-size: 13px;
+}

@@ -1,0 +1,93 @@
+.container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 14px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.plot {
+  display: flex;
+  gap: 8px;
+  min-width: 0;
+}
+
+.axisY {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 9.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  padding: 1px 0;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.canvas {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Real renderers own the canvas: center their fixed-size plot area. */
+.canvasReal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--border) 0,
+    var(--border) 1px,
+    transparent 1px,
+    transparent 25%
+  );
+  opacity: 0.6;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, rgba(19, 26, 36, 0.35), rgba(19, 26, 36, 0.78));
+}
+
+.xAxis {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 38px;
+  margin-top: 8px;
+  font-size: 9.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
