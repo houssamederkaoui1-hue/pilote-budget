@@ -1,8 +1,9 @@
 import type { ComponentType } from "react";
-import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { lazy, Suspense, useEffect, useState } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell";
 import { SignInOverlay } from "./components/auth/SignInOverlay";
+import { LoadingState } from "./components/ui/States";
 import { DashboardPage } from "./pages/DashboardPage";
 import { PlaceholderPage } from "./pages/PlaceholderPage";
 import { AccountsPage } from "./pages/AccountsPage";
@@ -15,9 +16,17 @@ import { DebtsPage } from "./pages/DebtsPage";
 import { AssistantPage } from "./pages/AssistantPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { OnboardingPage } from "./pages/OnboardingPage";
+import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { NAV_ITEMS } from "./lib/navigation";
 import { apiGet } from "./lib/api";
 import { getAuthToken, subscribeAuth } from "./lib/auth";
+
+/**
+ * The Firebase phase-1 preview lives on its own route and is lazy-loaded so
+ * the Firebase SDK stays out of the legacy (FastAPI) bundle. It only activates
+ * when the public VITE_FIREBASE_* variables are present.
+ */
+const FirebaseApp = lazy(() => import("./firebase/FirebaseApp"));
 
 /** Paths that have a real implementation; everything else is a scaffold. */
 const READY_PAGES: Record<string, ComponentType> = {
@@ -29,6 +38,7 @@ const READY_PAGES: Record<string, ComponentType> = {
   "/recurring": RecurringPage,
   "/debts": DebtsPage,
   "/assistant": AssistantPage,
+  "/analytics": AnalyticsPage,
   "/settings": SettingsPage,
 };
 
@@ -44,10 +54,13 @@ export default function App() {
   const [config, setConfig] = useState<PublicConfig | null>(null);
   const [authError, setAuthError] = useState(false);
   const [token, setToken] = useState<string | null>(getAuthToken());
+  const location = useLocation();
+  const isFirebasePath = location.pathname.startsWith("/firebase");
 
   // Reload the (public) bootstrap config whenever the token changes so a
   // fresh session re-checks whether auth is now required.
   useEffect(() => {
+    if (isFirebasePath) return;
     let active = true;
     apiGet<PublicConfig>("/config")
       .then((cfg) => {
@@ -61,7 +74,7 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, [token]);
+  }, [token, isFirebasePath]);
 
   useEffect(() => {
     const onChange = () => setToken(getAuthToken());
@@ -78,8 +91,16 @@ export default function App() {
 
   return (
     <>
-      {needsToken && <SignInOverlay error={authError} />}
+      {needsToken && !isFirebasePath && <SignInOverlay error={authError} />}
       <Routes>
+        <Route
+          path="/firebase/*"
+          element={
+            <Suspense fallback={<LoadingState label="Loading Firebase…" />}>
+              <FirebaseApp />
+            </Suspense>
+          }
+        />
         <Route element={<AppShell />}>
           <Route path="/" element={<DashboardPage />} />
           {NAV_ITEMS.filter((item) => item.path !== "/").map((item) => {

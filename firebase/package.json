@@ -1,0 +1,26 @@
+{
+  "name": "pilote-budget-firebase",
+  "private": true,
+  "type": "module",
+  "description": "Spark-only Firebase migration tooling for Pilote Budget (emulator, rules, importer).",
+  "scripts": {
+    "emulators:start": "firebase emulators:start --only firestore,auth --project demo-pilote-budget",
+    "emulators:exec": "firebase emulators:exec --only firestore,auth --project demo-pilote-budget",
+    "test": "node --test tests/*.test.js",
+    "test:rules": "node --test tests/rules.test.js",
+    "test:import": "node --test tests/import.test.js",
+    "test:smoke": "node --test tests/smoke.e2e.test.js",
+    "make-fixture": "node tools/make-fixture-db.mjs",
+    "make-user": "node tools/make-fixture-user.mjs",
+    "import": "node tools/import-sqlite-to-firestore.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "firebase-admin": "^13.2.0"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^4.0.1",
+    "firebase": "^11.5.0",
+    "firebase-tools": "^13.35.1"
+  }
+}

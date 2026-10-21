@@ -164,7 +164,7 @@ export const NAV_ITEMS: NavItem[] = [
     label: "Analytics",
     description: "Trends, forecasts and deterministic insights.",
     icon: AnalyticsIcon,
-    status: "planned",
+    status: "ready",
     group: "insights",
     features: [
     "Trend and category analysis",

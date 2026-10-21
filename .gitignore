@@ -10,8 +10,16 @@ build/
 
 # ---- Node / frontend build output ----
 node_modules/
+**/node_modules/
 dist/
 *.tsbuildinfo
+
+# ---- Firebase tooling ----
+firebase/*.log
+firebase/.firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
 
 # ---- Environment & secrets (never commit these) ----
 .env
@@ -29,6 +37,9 @@ id_ed25519
 credentials
 secrets.*
 .secret_token
+*.firebase-adminsdk-*.json
+*firebase-adminsdk*.json
+*-service-account.json
 
 # ---- Local databases & personal financial data ----
 backend/data/*

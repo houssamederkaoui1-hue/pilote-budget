@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { setAuthToken } from "../../lib/auth";
 import styles from "./SignInOverlay.module.css";
 
@@ -52,6 +53,11 @@ export function SignInOverlay({ error = false }: SignInOverlayProps) {
             Unlock
           </button>
         </form>
+        <p className={styles.subtitle}>
+          <Link to="/firebase/login">
+            Try the read-only Firebase preview →
+          </Link>
+        </p>
       </div>
     </div>
   );
