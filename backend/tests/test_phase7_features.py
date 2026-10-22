@@ -54,7 +54,7 @@ def _create_transaction(client, *, account_id, type_="expense", amount=10.0,
 
 def test_settings_defaults(client) -> None:
     body = client.get("/api/v1/settings").json()
-    assert body["currency"] == "EUR"
+    assert body["currency"] == "MAD"
     assert body["month_start_day"] == 1
     assert body["minimum_reserve"] == 0.0
     assert body["default_account_id"] is None

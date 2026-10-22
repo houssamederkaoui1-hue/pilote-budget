@@ -168,7 +168,7 @@ export function RecurringPage() {
                         </div>
                       </td>
                       <td className={`amount-cell num ${occurrence.type === "expense" ? "negative" : "positive"}`}>
-                        {occurrence.type === "expense" ? "−" : "+"}{formatCurrency(occurrence.amount, "EUR")}
+                        {occurrence.type === "expense" ? "−" : "+"}{formatCurrency(occurrence.amount, "MAD")}
                       </td>
                       <td>
                         <span className="chip chip-neutral">{frequencyLabel(occurrence.frequency)}</span>
@@ -242,7 +242,7 @@ export function RecurringPage() {
                     </div>
                     <div className={styles.templateBody}>
                       <span className={`num ${template.type === "expense" ? "negative" : "positive"}`}>
-                        {template.type === "expense" ? "−" : "+"}{formatCurrency(template.amount, "EUR")}
+                        {template.type === "expense" ? "−" : "+"}{formatCurrency(template.amount, "MAD")}
                       </span>
                       <span className="chip chip-neutral">{frequencyLabel(template.frequency)}</span>
                       <span className="secondary">next {formatDate(template.next_occurrence)}</span>

@@ -118,7 +118,7 @@ export function DashboardPage() {
 
   const a = analytics.data;
   const sts = safeToSpend.data;
-  const currency = a?.currency ?? profile.data?.currency ?? "EUR";
+  const currency = a?.currency ?? profile.data?.currency ?? "MAD";
 
   const stats = useMemo<StatProps[]>(() => {
     if (!a) return [];

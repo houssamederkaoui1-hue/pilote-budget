@@ -66,10 +66,10 @@ describe("document mappers (shapes written by the import tool)", () => {
       type: "checking",
       openingBalanceCents: 1000,
       currentBalanceCents: 123456,
-      currency: "EUR",
+      currency: "MAD",
       active: true,
     });
-    expect(account.currency).toBe("EUR");
+    expect(account.currency).toBe("MAD");
     expect(account.currentBalanceCents).toBe(123456);
     expect(account.type).toBe("checking");
     expect(account.description).toBe(null);

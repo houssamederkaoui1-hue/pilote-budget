@@ -31,7 +31,7 @@ def test_profile_defaults_are_created(client) -> None:
     response = client.get("/api/v1/profile")
     assert response.status_code == 200
     body = response.json()
-    assert body["currency"] == "EUR"
+    assert body["currency"] == "MAD"
     assert body["month_start_day"] == 1
     assert body["preferences"] == {}
 

@@ -171,7 +171,7 @@ export interface ProfileState {
   loading: boolean;
 }
 
-const DEFAULT_PROFILE: ProfileState = { currency: "EUR", loading: true };
+const DEFAULT_PROFILE: ProfileState = { currency: "MAD", loading: true };
 
 /** Reads `users/{uid}/profile/me` for display currency (single source). */
 export function useProfile(): ProfileState {
@@ -180,11 +180,11 @@ export function useProfile(): ProfileState {
 
   useEffect(() => {
     if (!uid || !runtime) {
-      setState({ currency: "EUR", loading: true });
+      setState({ currency: "MAD", loading: true });
       return;
     }
     let active = true;
-    setState({ currency: "EUR", loading: true });
+    setState({ currency: "MAD", loading: true });
     const ref = doc(runtime.db, "users", uid, "profile", "me");
     const unsubscribe = onSnapshot(
       ref,
@@ -195,11 +195,11 @@ export function useProfile(): ProfileState {
         const currency =
           typeof data?.currency === "string" && data.currency
             ? data.currency
-            : "EUR";
+            : "MAD";
         setState({ currency, loading: false });
       },
       () => {
-        if (active) setState({ currency: "EUR", loading: false });
+        if (active) setState({ currency: "MAD", loading: false });
       },
     );
     return () => {

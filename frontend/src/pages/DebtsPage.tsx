@@ -18,7 +18,7 @@ export function DebtsPage() {
   const totals = useApi<DebtTotals>("/debts/totals");
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<Debt | null>(null);
-  const currency = "EUR";
+  const currency = "MAD";
 
   const remove = useMutation((debt: Debt) => apiDelete(`/debts/${debt.id}`));
 

@@ -7,7 +7,7 @@ describe("CashFlowBars", () => {
   it("renders both series with tooltips and labels", () => {
     const html = renderToStaticMarkup(
       <CashFlowBars
-        currency="EUR"
+        currency="MAD"
         points={[{ label: "Sep", income: 100, expense: 40, current: false }]}
       />,
     );
@@ -20,7 +20,7 @@ describe("CashFlowBars", () => {
   it("labels the current period distinctly", () => {
     const html = renderToStaticMarkup(
       <CashFlowBars
-        currency="EUR"
+        currency="MAD"
         points={[{ label: "Oct", income: 0, expense: 0, current: true }]}
       />,
     );
@@ -32,7 +32,7 @@ describe("TrendLine", () => {
   it("renders a polyline with a dot per point", () => {
     const html = renderToStaticMarkup(
       <TrendLine
-        currency="EUR"
+        currency="MAD"
         points={[
           { label: "Apr", value: 800 },
           { label: "May", value: 1200 },
@@ -44,13 +44,13 @@ describe("TrendLine", () => {
   });
 
   it("renders nothing without points", () => {
-    expect(renderToStaticMarkup(<TrendLine currency="EUR" points={[]} />)).toBe("");
+    expect(renderToStaticMarkup(<TrendLine currency="MAD" points={[]} />)).toBe("");
   });
 
   it("deals with a flat series (min === max)", () => {
     const html = renderToStaticMarkup(
       <TrendLine
-        currency="EUR"
+        currency="MAD"
         points={[
           { label: "A", value: 100 },
           { label: "B", value: 100 },
@@ -65,7 +65,7 @@ describe("Donut", () => {
   it("renders a conic gradient plus a legend item per segment", () => {
     const html = renderToStaticMarkup(
       <Donut
-        currency="EUR"
+        currency="MAD"
         segments={[
           { key: "1", label: "Food", value: 80 },
           { key: "2", label: "Transport", value: 20 },
@@ -78,7 +78,7 @@ describe("Donut", () => {
   });
 
   it("renders nothing when there is no value", () => {
-    expect(renderToStaticMarkup(<Donut currency="EUR" segments={[]} />)).toBe("");
-    expect(renderToStaticMarkup(<Donut currency="EUR" segments={[{ key: "1", label: "A", value: 0 }]} />)).toBe("");
+    expect(renderToStaticMarkup(<Donut currency="MAD" segments={[]} />)).toBe("");
+    expect(renderToStaticMarkup(<Donut currency="MAD" segments={[{ key: "1", label: "A", value: 0 }]} />)).toBe("");
   });
 });

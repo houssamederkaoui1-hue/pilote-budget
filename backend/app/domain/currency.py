@@ -7,7 +7,7 @@ These three-letter codes are the only currencies Pilote Budget persists;
 from __future__ import annotations
 
 SUPPORTED_CURRENCIES: frozenset[str] = frozenset(
-    {"USD", "EUR", "GBP", "CAD", "AUD", "NZD", "CHF", "JPY", "INR"}
+    {"USD", "EUR", "GBP", "CAD", "AUD", "NZD", "CHF", "JPY", "INR", "MAD"}
 )
 
 CURRENCY_SYMBOLS: dict[str, str] = {
@@ -20,6 +20,7 @@ CURRENCY_SYMBOLS: dict[str, str] = {
     "CHF": "CHF ",
     "JPY": "¥",
     "INR": "₹",
+    "MAD": "د.م",
 }
 
 FALLBACK_SYMBOL = "¤"

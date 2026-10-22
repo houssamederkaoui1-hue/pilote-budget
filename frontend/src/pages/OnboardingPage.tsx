@@ -24,7 +24,7 @@ export function OnboardingPage() {
   const navigate = useNavigate();
   const state = useApi<OnboardingResponse>("/settings/onboarding");
   const [step, setStep] = useState<(typeof STEPS)[number]>("account");
-  const [currency, setCurrency] = useState("EUR");
+  const [currency, setCurrency] = useState("MAD");
   const [error, setError] = useState<string | null>(null);
 
   const steps = useMemo(() => {

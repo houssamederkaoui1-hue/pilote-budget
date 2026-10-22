@@ -22,7 +22,7 @@ class Profile(Base, TimestampMixin):
     DEFAULT_ID = 1
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    currency: Mapped[str] = mapped_column(String(3), nullable=False, default="EUR")
+    currency: Mapped[str] = mapped_column(String(3), nullable=False, default="MAD")
     month_start_day: Mapped[int] = mapped_column(
         Integer, nullable=False, default=1, server_default="1"
     )

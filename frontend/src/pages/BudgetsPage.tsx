@@ -46,7 +46,7 @@ export function BudgetsPage() {
   const [anchor, setAnchor] = useState(new Date().toISOString().slice(0, 10));
   const [editing, setEditing] = useState(false);
   const budget = useApi<BudgetResponse>(apiUrl("/budgets", { period: anchor }));
-  const currency = "EUR";
+  const currency = "MAD";
   const data = budget.data;
 
   const monthLabel = useMemo(

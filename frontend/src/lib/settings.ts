@@ -3,6 +3,7 @@
 import { DASHBOARD_SECTION_META, type DashboardPreferences, type DashboardSectionId } from "../types/api";
 
 export const SUPPORTED_CURRENCIES: { code: string; label: string }[] = [
+  { code: "MAD", label: "MAD — Moroccan Dirham" },
   { code: "EUR", label: "EUR — Euro" },
   { code: "USD", label: "USD — US Dollar" },
   { code: "GBP", label: "GBP — British Pound" },

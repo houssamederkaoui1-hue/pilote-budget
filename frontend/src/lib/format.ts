@@ -18,7 +18,7 @@ function formatter(currency: string, withCents: boolean): Intl.NumberFormat {
 
 export function formatCurrency(
   value: number | null | undefined,
-  currency = "EUR",
+  currency = "MAD",
   options: { cents?: boolean } = {},
 ): string {
   if (value === null || value === undefined || Number.isNaN(value)) {
@@ -27,7 +27,7 @@ export function formatCurrency(
   return formatter(currency, options.cents ?? true).format(value);
 }
 
-export function formatCompactCurrency(value: number, currency = "EUR"): string {
+export function formatCompactCurrency(value: number, currency = "MAD"): string {
   const created = new Intl.NumberFormat(undefined, {
     style: "currency",
     currency,

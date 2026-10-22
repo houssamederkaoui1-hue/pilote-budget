@@ -75,7 +75,7 @@ export function TransactionsPage() {
   }, [from, to]);
   const summary = useApi<Summary>(summaryPath);
 
-  const currency = activeAccounts[0]?.currency ?? "EUR";
+  const currency = activeAccounts[0]?.currency ?? "MAD";
   const rows = transactions.data?.items ?? [];
   const total = transactions.data?.total ?? 0;
 

@@ -301,7 +301,7 @@ def _seed_source(url: str) -> dict:
         conn.execute(
             Base.metadata.tables["profiles"].insert().values(
                 id=1,
-                currency="EUR",
+                currency="MAD",
                 month_start_day=1,
                 timezone="Europe/Paris",
                 preferences="{}",
@@ -324,7 +324,7 @@ def _seed_source(url: str) -> dict:
             accounts.insert().values(
                 name="Chequing",
                 type="checking",
-                currency="EUR",
+                currency="MAD",
                 opening_balance=1000.0,
             )
         ).inserted_primary_key[0]
@@ -367,7 +367,7 @@ class TestImporterCore:
             assert txn[0] == ids["account_id"]
             assert txn[1] == ids["child_id"]
             profile = conn.execute(text("SELECT currency, timezone FROM profiles")).one()
-            assert profile[0] == "EUR" and profile[1] == "Europe/Paris"
+            assert profile[0] == "MAD" and profile[1] == "Europe/Paris"
 
     def test_refuses_non_empty_target(self, tmp_path):
         from app.tools.import_sqlite import import_sqlite

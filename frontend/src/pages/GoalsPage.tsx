@@ -24,7 +24,7 @@ export function GoalsPage() {
   const goals = useApi<Goal[]>("/goals");
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState<Goal | null>(null);
-  const currency = "EUR";
+  const currency = "MAD";
 
   const totalTarget = goals.data?.reduce((sum, goal) => sum + goal.target_amount, 0) ?? 0;
   const totalSaved = goals.data?.reduce((sum, goal) => sum + goal.current_amount, 0) ?? 0;

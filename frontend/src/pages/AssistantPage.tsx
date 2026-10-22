@@ -166,7 +166,7 @@ function AskBox({ questions, currency }: { questions: AssistantOverviewResponse[
 export function AssistantPage() {
   const overview = useApi<AssistantOverviewResponse>("/assistant");
   const data = overview.data;
-  const currency = data?.currency ?? "EUR";
+  const currency = data?.currency ?? "MAD";
   const insights = sortInsights(data?.insights ?? []);
   const periodLabel = data
     ? `${formatDate(data.period.period_start)} – ${formatDate(data.period.period_end)}`

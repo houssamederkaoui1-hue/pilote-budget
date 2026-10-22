@@ -35,7 +35,7 @@ export function AccountsPage() {
   const [editing, setEditing] = useState<Account | null>(null);
   const [creating, setCreating] = useState(false);
 
-  const currency = "EUR";
+  const currency = "MAD";
 
   const stopped = accounts.data?.filter((account) => !account.active) ?? [];
   const activeBalance =
@@ -222,7 +222,7 @@ function AccountFormModal({ account, onClose, onSaved }: AccountFormProps) {
   const [openingBalance, setOpeningBalance] = useState(
     account ? String(account.opening_balance) : "0",
   );
-  const [currency, setCurrency] = useState(account?.currency ?? "EUR");
+  const [currency, setCurrency] = useState(account?.currency ?? "MAD");
   const [description, setDescription] = useState(account?.description ?? "");
   const [active, setActive] = useState(account?.active ?? true);
   const [pending, setPending] = useState(false);
@@ -271,7 +271,7 @@ function AccountFormModal({ account, onClose, onSaved }: AccountFormProps) {
           <Input value={openingBalance} onChange={(event) => setOpeningBalance(event.target.value)} type="number" step="0.01" inputMode="decimal" />
         </Field>
         <Field label="Currency">
-          <Input value={currency} onChange={(event) => setCurrency(event.target.value)} placeholder="EUR" maxLength={3} />
+          <Input value={currency} onChange={(event) => setCurrency(event.target.value)} placeholder="MAD" maxLength={3} />
         </Field>
       </div>
       <Field label="Description">

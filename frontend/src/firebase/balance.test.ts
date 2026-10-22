@@ -24,7 +24,7 @@ function account(id: string, openingBalanceCents: number): FAccount {
     type: "bank",
     openingBalanceCents,
     currentBalanceCents: 999999,
-    currency: "EUR",
+    currency: "MAD",
     active: true,
     description: null,
   };
