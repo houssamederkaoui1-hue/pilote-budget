@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from collections.abc import Iterator
 from pathlib import Path
 
 from sqlalchemy import Engine, create_engine, event, text
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.config import Settings, get_settings
@@ -17,49 +17,29 @@ _session_factory: sessionmaker[Session] | None = None
 
 def _lock_down_sqlite_file(settings: Settings) -> None:
     """Keep the on-disk database private (owner read/write only)."""
-    url = settings.resolved_database_url
-    if not url.startswith("sqlite:///"):
-        return
-    path_part = url[len("sqlite:///") :]
-    if not path_part or path_part in {":memory:", ""}:
-        return
-    db_path = Path(path_part)
+    db_path = Path(make_url(settings.resolved_database_url).database or "")
     try:
-        if db_path.exists():
+        if db_path.is_file():
             db_path.chmod(0o600)
-        if db_path.parent.exists():
-            db_path.parent.chmod(0o700)
     except OSError:
         # Permissions hardening is best-effort; never let it crash the app.
         pass
 
 
 def _build_engine(settings: Settings) -> Engine:
-    url = settings.resolved_database_url
-    kwargs: dict = {"future": True}
-    if url.startswith("sqlite"):
-        # SQLite lives in a single file/thread: allow FastAPI's worker threads
-        # and keep referential integrity enabled.
-        kwargs["connect_args"] = {"check_same_thread": False}
-    else:
-        # Server databases (Postgres on Render): tolerate idle-connection
-        # drops between requests (pool_pre_ping) and recycle long-lived
-        # connections before the server kills them.
-        kwargs["pool_pre_ping"] = True
-        kwargs["pool_recycle"] = 1800
-    engine = create_engine(url, **kwargs)
+    engine = create_engine(
+        settings.resolved_database_url, connect_args={"check_same_thread": False}
+    )
 
-    if url.startswith("sqlite"):
-        @event.listens_for(engine, "connect")
-        def _configure_sqlite(dbapi_connection, _record):  # pragma: no cover
-            cursor = dbapi_connection.cursor()
-            cursor.execute("PRAGMA foreign_keys=ON")
-            cursor.execute("PRAGMA busy_timeout=5000")
-            cursor.execute("PRAGMA journal_mode=WAL")
-            cursor.close()
+    @event.listens_for(engine, "connect")
+    def _configure_sqlite(dbapi_connection, _record):  # pragma: no cover
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute("PRAGMA busy_timeout=5000")
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.close()
 
-    if url.startswith("sqlite:///"):
-        _lock_down_sqlite_file(settings)
+    _lock_down_sqlite_file(settings)
 
     return engine
 

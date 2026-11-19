@@ -1,8 +1,5 @@
 /** Minimal typed fetch client for the local API. */
 
-import type { AppInfo } from "../types/api";
-import { getAuthToken, notifyUnauthorized } from "./auth";
-
 export class ApiError extends Error {
   readonly status: number;
 
@@ -17,16 +14,6 @@ const BASE = "/api/v1";
 
 function isAbort(error: unknown): boolean {
   return error instanceof DOMException && error.name === "AbortError";
-}
-
-/** Authorization header when a shared access token is in play. */
-function authHeaders(headers: HeadersInit | undefined): HeadersInit {
-  const token = getAuthToken();
-  if (!token) return headers ?? {};
-  return {
-    ...typeof headers === "object" && !(headers instanceof Headers) ? headers : {},
-    Authorization: `Bearer ${token}`,
-  };
 }
 
 /** Turn a failed response into an ApiError carrying the server's message. */
@@ -56,18 +43,15 @@ async function request<T>(
 ): Promise<T> {
   let response: Response;
   try {
+    const headers = new Headers(init.headers);
+    headers.set("Accept", "application/json");
     response = await fetch(`${BASE}${path}`, {
       ...init,
-      headers: authHeaders({ Accept: "application/json", ...(init.headers as object) }),
+      headers,
     });
   } catch (error) {
     if (isAbort(error)) throw error;
     throw new ApiError(0, "Cannot reach the Pilote Budget API. Is the backend running?");
-  }
-  if (response.status === 401) {
-    // The shared token is missing or wrong: drop it so the sign-in screen
-    // reappears instead of hammering the server with a dead credential.
-    notifyUnauthorized();
   }
   if (!response.ok) throw await toApiError(response);
   if (response.status === 204) return undefined as T;
@@ -124,23 +108,16 @@ export function apiUpload<T>(
   return request<T>(path, { method: "POST", body: form });
 }
 
-/** Absolute URL for a CSV download (filters included). */
-export function apiUrl(path: string, params?: Record<string, string | number | undefined>): string {
+export function withQuery(path: string, params?: Record<string, string | number | undefined>): string {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params ?? {})) {
     if (value !== undefined && value !== "") query.set(key, String(value));
   }
   const suffix = query.toString();
-  return `${BASE}${path}${suffix ? `?${suffix}` : ""}`;
+  return suffix ? `${path}?${suffix}` : path;
 }
 
-export function fetchAppInfo(signal?: AbortSignal): Promise<AppInfo> {
-  return fetch("/", { signal, headers: { Accept: "application/json" } }).then(
-    async (response) => {
-      if (!response.ok) {
-        throw new ApiError(response.status, `Request failed (${response.status})`);
-      }
-      return (await response.json()) as AppInfo;
-    },
-  );
+/** Root-relative URL for browser downloads. */
+export function apiUrl(path: string, params?: Record<string, string | number | undefined>): string {
+  return `${BASE}${withQuery(path, params)}`;
 }

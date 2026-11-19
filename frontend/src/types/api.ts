@@ -1,13 +1,5 @@
 /** Types mirroring the backend API contracts. */
 
-export interface AppInfo {
-  app: string;
-  version: string;
-  environment: string;
-  docs: string;
-  api: string;
-}
-
 export interface DatabaseStatus {
   connected: boolean;
   dialect: string | null;

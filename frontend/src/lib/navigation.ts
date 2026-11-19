@@ -170,7 +170,6 @@ export const NAV_ITEMS: NavItem[] = [
     "Trend and category analysis",
     "Cashflow forecasting",
     "Safe-to-Spend simulation",
-    "Optional AI assistant hooks",
     ],
   },
   {

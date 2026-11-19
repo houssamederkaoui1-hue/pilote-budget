@@ -4,8 +4,11 @@ from __future__ import annotations
 
 from datetime import date
 
+import pytest
+from pydantic import ValidationError
 from sqlalchemy import inspect
 
+from app.config import Settings
 from app.db.schema import create_all, ensure_schema, existing_tables
 from app.db.session import get_engine
 from app.models import Account, Category, Debt, Goal, RecurringTransaction, Transaction
@@ -21,6 +24,12 @@ EXPECTED_TABLES = {
     "transactions",
     "transfers",
 }
+
+
+@pytest.mark.parametrize("url", ["sqlite:///:memory:", "https://example.invalid/ledger"])
+def test_settings_require_file_backed_sqlite(url: str) -> None:
+    with pytest.raises(ValidationError, match="must point to a local SQLite file"):
+        Settings(database_url=url)
 
 
 def test_migrations_create_every_table(settings) -> None:
@@ -146,11 +155,8 @@ def test_foreign_keys_are_enforced(settings, session) -> None:
         raise AssertionError("expected foreign key violation")
 
 
-def test_inspector_reports_expected_columns() -> None:
-    from app.db.schema import ensure_schema
-    from app.config import get_settings
-
-    ensure_schema(get_settings())
+def test_inspector_reports_expected_columns(settings) -> None:
+    ensure_schema(settings)
     columns = {c["name"] for c in inspect(get_engine()).get_columns("transactions")}
     assert {
         "id",

@@ -21,7 +21,7 @@ createRoot(container).render(
 if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js").catch(() => {
-      // Failure to register is non-fatal: the app still works online.
+      // The app can load directly from the local server.
     });
   });
 }

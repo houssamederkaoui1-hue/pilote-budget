@@ -3,15 +3,13 @@
  * Strategy:
  * - Never cache /api/* responses (financial data stays out of the cache).
  * - Navigations: network-first, falling back to the cached app shell so the
- *   installed app keeps opening when the phone is offline.
+ *   installed app can open the cached shell if the local server stops.
  * - Everything else (hashed assets, icons, manifest): stale-while-revalidate.
  *
- * A fresh Vite build hashes asset filenames, so bumping CACHE_VERSION at
- * deploy time invalidaates stale entry points automatically.
  */
 "use strict";
 
-const CACHE_VERSION = "pilote-v1";
+const CACHE_VERSION = "pilote-v3";
 const SHELL_URL = "/index.html";
 
 self.addEventListener("install", (event) => {
@@ -27,7 +25,7 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches
       .keys()
-      .then((keys) => Promise.all(keys.filter((key) => key !== CACHE_VERSION).map((key) => caches.delete(key))))
+      .then((keys) => Promise.all(keys.filter((key) => /^pilote-v\d+$/.test(key) && key !== CACHE_VERSION).map((key) => caches.delete(key))))
       .then(() => self.clients.claim()),
   );
 });
@@ -44,7 +42,7 @@ async function handleFetch(request) {
   }
 
   // Never serve or store API payloads from the cache.
-  if (url.pathname.startsWith("/api/")) {
+  if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
     return fetch(request);
   }
 

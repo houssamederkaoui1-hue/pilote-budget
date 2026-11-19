@@ -40,7 +40,7 @@ def client(app):
     from fastapi.testclient import TestClient
 
     # The lifespan hook runs migrations, so the schema exists after entering.
-    with TestClient(app) as test_client:
+    with TestClient(app, base_url="http://127.0.0.1") as test_client:
         yield test_client
 
 

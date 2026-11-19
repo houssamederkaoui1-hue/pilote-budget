@@ -29,7 +29,6 @@ from app.domain.financial_assistant import (
     prioritize,
 )
 from app.services.analytics_service import AnalyticsService
-from app.services.assistant_provider import get_assistant_provider
 from app.services.goal_service import GoalService
 from app.services.profile_service import ProfileService
 from app.services.recurring_service import RecurringService
@@ -166,13 +165,9 @@ class FinancialAssistantService:
         period = summary["period"]
         label = _period_label(period["period_start"], period["period_end"])
 
-        provider = get_assistant_provider(self.session)
-        insights = state["insights"]
-        overview_text = provider.draft_overview(compose_overview(state, fmt, label))
-
         return {
-            "provider": provider.id,
-            "provider_name": provider.name,
+            "provider": "rules",
+            "provider_name": "Rules engine",
             "generated_at": state["generated_at"],
             "period": {
                 "period_start": period["period_start"],
@@ -181,8 +176,8 @@ class FinancialAssistantService:
             "currency": state["currency"],
             "has_data": state["has_data"],
             "greeting": greeting(),
-            "overview": overview_text,
-            "insights": insights,
+            "overview": compose_overview(state, fmt, label),
+            "insights": state["insights"],
             "questions": QUESTIONS,
         }
 

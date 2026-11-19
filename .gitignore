@@ -2,6 +2,8 @@
 __pycache__/
 *.py[cod]
 .venv/
+venv/
+env/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
@@ -10,21 +12,19 @@ build/
 
 # ---- Node / frontend build output ----
 node_modules/
-**/node_modules/
 dist/
 *.tsbuildinfo
-
-# ---- Firebase tooling ----
-firebase/*.log
-firebase/.firebase
-.firebase/
-firebase-debug.log
-firestore-debug.log
+coverage/
+*.log
 
 # ---- Environment & secrets (never commit these) ----
 .env
 .env.*
-!.env.example
+.envrc
+.npmrc
+.pypirc
+.aws/
+.codex/
 *.pem
 *.key
 *.p12
@@ -35,10 +35,14 @@ id_ecdsa
 id_ed25519
 .netrc
 credentials
+credentials.*
+credentials/
+secrets/
+secrets
 secrets.*
 .secret_token
-*.firebase-adminsdk-*.json
-*firebase-adminsdk*.json
+*.token
+*adminsdk*.json
 *-service-account.json
 
 # ---- Local databases & personal financial data ----
@@ -51,13 +55,23 @@ backend/data/*
 *.db-wal2
 *.sqlite
 *.sqlite3
-*.sqlite-journal
+*.sqlite-*
+*.sqlite3-*
+financial-data/
+bank-statements/
 
 # ---- Financial exports / backups / downloads ----
 *.csv
+*.tsv
+*.xls
 *.xlsx
+*.ofx
+*.qfx
+*.qif
 *.dump
 *.backup
+pilote-budget-backup*.json
+*-backup.json
 *.bak
 *.tar
 *.tgz

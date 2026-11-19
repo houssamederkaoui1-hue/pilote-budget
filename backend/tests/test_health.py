@@ -27,6 +27,11 @@ def test_health_endpoint_is_under_api_prefix(client) -> None:
     assert client.get("/health").status_code == 404
 
 
+def test_api_rejects_non_loopback_host(client) -> None:
+    response = client.get("/api/v1/health", headers={"Host": "pilote.example.invalid"})
+    assert response.status_code == 400
+
+
 def test_profile_defaults_are_created(client) -> None:
     response = client.get("/api/v1/profile")
     assert response.status_code == 200

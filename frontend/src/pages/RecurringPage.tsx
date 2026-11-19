@@ -16,7 +16,7 @@ import { Modal } from "../components/ui/Modal";
 import { EmptyState, ErrorState, LoadingState } from "../components/ui/States";
 import { useApi } from "../hooks/useApi";
 import { errorMessage, useMutation } from "../hooks/useMutation";
-import { apiDelete, apiPatch, apiPost, apiUrl } from "../lib/api";
+import { apiDelete, apiPatch, apiPost, withQuery } from "../lib/api";
 import { formatCurrency, formatDate } from "../lib/format";
 import type { Account, Category, Frequency, RecurringOccurrence, RecurringTemplate } from "../types/api";
 import styles from "./RecurringPage.module.css";
@@ -41,7 +41,7 @@ export function RecurringPage() {
   const [editing, setEditing] = useState<RecurringTemplate | null>(null);
 
   const record = useMutation(({ id, date }: { id: number; date: string }) =>
-    apiPost(apiUrl(`/recurring/${id}/record`, date ? { date } : {}), undefined),
+    apiPost(withQuery(`/recurring/${id}/record`, { date })),
   );
   const advance = useMutation((id: number) => apiPost(`/recurring/${id}/advance`));
   const toggle = useMutation((template: RecurringTemplate) =>

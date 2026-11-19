@@ -1,62 +1,85 @@
 # Pilote Budget
 
-Local-first personal finance manager.
+Pilote Budget is a local-first personal finance application. The browser talks to a FastAPI server on the same desktop, and the server stores the ledger in a local SQLite file. It runs without internet access, cloud services, or sign-in once the dependencies are available locally.
 
-- **Backend:** FastAPI + SQLAlchemy + SQLite (Alembic migrations), `backend/`
-- **Frontend:** React + TypeScript + Vite, `frontend/`
+## Features
 
-No cloud services, no authentication, no external integrations.
+- Manage transactions, accounts, transfers, and income and expense categories. Import and preview CSV files, filter the ledger, and export transactions as CSV.
+- Plan category budgets, track savings goals and debts, and record or skip scheduled transactions.
+- Review cash flow, spending trends, forecasts, and Safe-to-Spend calculations.
+- Ask the financial assistant supported questions. It uses deterministic rules and calculations over the local ledger.
+- Export, validate, and restore a full JSON backup from Settings. Restoring replaces the existing data.
 
-## Run
+## Setup
 
-### Backend
+Use Python 3.11 or newer, `uv`, and Node.js 24 LTS with npm. The commands below use locally cached packages. On an offline desktop, the locked packages and build tools must be preinstalled or supplied in local `uv` and npm caches. A dependency cache is unnecessary if `backend/.venv` and `frontend/node_modules` are already prepared for that desktop.
+
+From the project root:
+
+```bash
+(cd backend && uv sync --offline --locked)
+(cd frontend && npm ci --offline --no-audit --no-fund)
+```
+
+To use caches supplied in a different location, set `UV_CACHE_DIR` and `npm_config_cache` to their respective cache paths before running the commands. The caches must contain the locked packages and any native wheels or binaries for the desktop's operating system, CPU architecture, and runtime versions. A cache miss stops the offline installation. Installations from local caches were verified on Linux x86-64 with Python 3.14.6, `uv` 0.11.29, Node.js 24.22.0, and npm 11.19.1.
+
+If the sandbox reports `EPERM` when esbuild checks its binary version, rerun the npm command with `--ignore-scripts`. The locked platform-specific esbuild package must be available in the npm cache for this to work.
+
+## Run locally
+
+Start the API in one terminal:
 
 ```bash
 cd backend
-uv sync
-uv run uvicorn app.main:app --reload --port 8000
+.venv/bin/python -m uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
-On startup the SQLite database is created and migrated automatically
-(`backend/data/pilote_budget.db`). Health check: <http://127.0.0.1:8000/api/v1/health>,
-OpenAPI docs: <http://127.0.0.1:8000/docs>.
-
-### Frontend
+Start Vite in another terminal:
 
 ```bash
 cd frontend
-npm install
 npm run dev
 ```
 
-Open <http://localhost:5173>. The dev server proxies `/api` to the backend on
-port 8000.
+Open [Pilote Budget](http://127.0.0.1:5173). Vite proxies `/api` to the loopback backend. The [health endpoint](http://127.0.0.1:8000/api/v1/health) reports API and SQLite status. Keep both servers bound to loopback.
+
+The API creates `backend/data/pilote_budget.db` and applies Alembic migrations on startup. For an isolated demo database, set `PILOTE_DATABASE_URL` to `sqlite:///./data/demo.db` when starting the API. Use the onboarding flow to create synthetic accounts and categories, then add sample transactions. In this project workspace, use synthetic entries, imports, and backups only.
+
+To apply and inspect migrations without starting the API, run these commands from `backend/` with the same `PILOTE_DATABASE_URL` setting:
+
+```bash
+.venv/bin/alembic upgrade head
+.venv/bin/alembic current
+```
+
+`PILOTE_DEBUG=true` exposes the OpenAPI JSON at `/openapi.json` on the API server.
+
+To preview the production build locally, with the API still running, run `npm run build` and `npm run preview` from `frontend/` and open [the production preview](http://127.0.0.1:4173).
 
 ## Tests
 
+Run these commands from the project root after setup:
+
 ```bash
-cd backend && uv run pytest      # db initialization, API health, domain logic
-cd frontend && npm run build     # typecheck (tsc -b) + production build
+(cd backend && .venv/bin/python -m pytest)
+(cd frontend && npm test)
+(cd frontend && npm run typecheck)
+(cd frontend && npm run build)
 ```
+
+Backend tests cover migrations, API workflows, and financial calculations using synthetic records in temporary SQLite databases. Frontend tests cover the API client, formatting, chart rendering, quick entry, and dashboard and assistant helpers.
 
 ## Architecture
 
-```
-backend/app/
-  api/v1/       HTTP layer (thin routes, response models)
-  services/     application/workflow layer (takes a Session)
-  domain/       pure logic: enums, period math, calculations
-  models/       SQLAlchemy models (full schema, see below)
-  schemas/      Pydantic request/response contracts
-  db/           engine, session, base/mixins, migration helpers
-  config.py     pydantic-settings (PILOTE_ env prefix, .env support)
-backend/alembic/  migrations (source of truth for the schema)
-```
+| Location | Responsibility |
+| --- | --- |
+| `frontend/src/` | React and TypeScript pages, reusable components, data hooks, and the local API client |
+| `backend/app/api/v1/` | FastAPI routes and request handling |
+| `backend/app/services/` | Application workflows and SQLAlchemy queries |
+| `backend/app/domain/` | Ledger calculations, budget periods, schedules, Safe-to-Spend, and assistant rules |
+| `backend/app/models/`, `backend/app/schemas/` | Database models and API contracts |
+| `backend/alembic/` | Versioned SQLite migrations |
 
-Database schema (foundation for later phases): `profiles`, `accounts`,
-`categories`, `transactions`, `transfers`, `budgets`, `goals`,
-`recurring_transactions`, `debts`.
+## License
 
-Frontend keeps business logic out of components: `lib/` (API client, nav
-config, formatting, dashboard view model), `hooks/` (data fetching states),
-`components/` (reusable shell/cards/charts/states), `pages/`.
+Pilote Budget and its original SVG icons are available under the MIT license. Third-party dependencies retain their own licenses. See [LICENSE](LICENSE).

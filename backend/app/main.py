@@ -4,13 +4,12 @@ from __future__ import annotations
 
 import logging
 from contextlib import asynccontextmanager
-from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError, OperationalError
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.api.v1.router import api_router
 from app.config import Settings, get_settings
@@ -54,15 +53,14 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ensure_schema(resolved)
         yield
 
-    show_docs = resolved.debug
     app = FastAPI(
         title=resolved.app_name,
         version=resolved.version,
         description="Local-first personal finance API.",
         lifespan=lifespan,
-        docs_url="/docs" if show_docs else None,
+        docs_url=None,
         redoc_url=None,
-        openapi_url="/openapi.json" if show_docs else None,
+        openapi_url="/openapi.json" if resolved.debug else None,
     )
     app.state.settings = resolved
 
@@ -111,50 +109,18 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         logger.exception("Unhandled exception (%s)", type(exc).__name__)
         return JSONResponse(status_code=500, content={"detail": _UNEXPECTED})
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=resolved.cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-    # API first so /api/v1/* always wins ahead of any frontend catch-all below.
-    # Note: this runs inside the app-factory closure; ordering relative to the
-    # routes registered later is what matters, and FastAPI matches in order.
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost"])
     app.include_router(api_router, prefix=resolved.api_prefix)
 
-    if resolved.serve_frontend:
-        dist: Path = Path(resolved.frontend_dist)
-        if (dist / "index.html").is_file():
-            # Serve the built SPA from the API process (same origin). The API
-            # router above is registered first, so /api/v1/* always wins; this
-            # catch-all handles the app shell, built assets and client-side
-            # routes. Unknown API paths stay 404 instead of returning HTML.
-            @app.get("/{full_path:path}", include_in_schema=False, response_model=None)
-            async def serve_spa(full_path: str) -> FileResponse | JSONResponse:
-                if full_path == "api" or full_path.startswith("api/"):
-                    return JSONResponse(status_code=404, content={"detail": "Not found"})
-                candidate = dist / full_path
-                if full_path and candidate.is_file():
-                    return FileResponse(candidate)
-                return FileResponse(dist / "index.html")
-        else:
-            logger.warning(
-                "PILOTE_SERVE_FRONTEND is enabled but %s/index.html does not exist; "
-                "run `npm run build` in frontend/ first.",
-                dist,
-            )
-    else:
-        @app.get("/", tags=["system"])
-        def root() -> dict:
-            return {
-                "app": resolved.app_name,
-                "version": resolved.version,
-                "environment": resolved.environment,
-                "docs": "/docs" if show_docs else None,
-                "api": resolved.api_prefix,
-            }
+    @app.get("/", tags=["system"])
+    def root() -> dict:
+        return {
+            "app": resolved.app_name,
+            "version": resolved.version,
+            "environment": resolved.environment,
+            "openapi": app.openapi_url,
+            "api": resolved.api_prefix,
+        }
 
     return app
 

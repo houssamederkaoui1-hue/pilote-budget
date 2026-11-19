@@ -18,7 +18,7 @@ import { Modal } from "../components/ui/Modal";
 import { EmptyState, ErrorState, LoadingState } from "../components/ui/States";
 import { useApi } from "../hooks/useApi";
 import { errorMessage } from "../hooks/useMutation";
-import { apiPut, apiUrl } from "../lib/api";
+import { apiPut, withQuery } from "../lib/api";
 import { formatCurrency, formatMonthAnchor } from "../lib/format";
 import type {
   AllocationPut,
@@ -45,7 +45,7 @@ function statusBadge(item: BudgetItemStats) {
 export function BudgetsPage() {
   const [anchor, setAnchor] = useState(new Date().toISOString().slice(0, 10));
   const [editing, setEditing] = useState(false);
-  const budget = useApi<BudgetResponse>(apiUrl("/budgets", { period: anchor }));
+  const budget = useApi<BudgetResponse>(withQuery("/budgets", { period: anchor }));
   const currency = "MAD";
   const data = budget.data;
 
@@ -361,7 +361,7 @@ function BudgetFormModal({ period, initial, onClose, onSaved }: BudgetFormProps)
     };
     setPending(true);
     setError(null);
-    apiPut<BudgetResponse>(apiUrl("/budgets", { period }), payload)
+    apiPut<BudgetResponse>(withQuery("/budgets", { period }), payload)
       .then(onSaved)
       .catch((err) => setError(errorMessage(err)))
       .finally(() => setPending(false));
